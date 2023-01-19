@@ -1,26 +1,38 @@
-let pokemonList = [];
-pokemonList.push(
-  {
-    name:'Bulbasaur',
-    height: 7,
-    types: ['grass','poison']
-  },
-  {
-    name:'Ivysaur',
-    height: 1,
-    types: ['grass','poison']
-  },
-  {
-    name: 'Venusaur',
-    height: 2,
-    types: ['grass','poison']
-  },
-  {
-    name:'Charmander',
-    height: 6,
-    types: ['fire']
-  }
-);
+let pokemonRepository = (function (){
+  let pokemonList = [
+      {
+      name:'Bulbasaur',
+      height: 7,
+      types: ['grass','poison']
+    },
+    {
+      name:'Ivysaur',
+      height: 1,
+      types: ['grass','poison']
+    },
+    {
+      name: 'Venusaur',
+      height: 2,
+      types: ['grass','poison']
+    },
+    {
+      name:'Charmander',
+      height: 6,
+      types: ['fire']
+    }
+  ]
+
+function getAll(){
+  return pokemonList;
+}
+function add(pokemon){
+  pokemonList.push (pokemon);
+}
+return {
+  getAll:getAll,
+  add:add
+}
+})()
 
 /* for loop
 for (let i=0; i<pokemonList.length; i++){
@@ -33,8 +45,8 @@ for (let i=0; i<pokemonList.length; i++){
 }
 */
 
-/* forEach with external function
-pokemonList.forEach(WritePokemons);
+//forEach with external function
+pokemonRepository.getAll().forEach(WritePokemons);
 function WritePokemons(item){
   document.write (item.name  + ' (height: '+ item.height + ')' );
   if (item.height > 6) {
@@ -43,20 +55,20 @@ function WritePokemons(item){
     document.write ('<br>');
   }
 }
-*/
 
- /* forEach with internal anonymous function
-pokemonList.forEach(function(item){
+
+/*forEach with internal anonymous function
+  pokemonList.forEach(function(item){
   document.write (item.name  + ' (height: '+ item.height + ')' );
   if (item.height > 6) {
     document.write ('Wow, that’s big! <br>');
   } else  {
     document.write ('<br>');
   }
-});
-*/
+});*/
 
-// arrow function
+
+/* arrow function
 pokemonList.forEach(item => {
   document.write (item.name  + ' (height: '+ item.height + ')' );
   if (item.height > 6) {
@@ -65,3 +77,10 @@ pokemonList.forEach(item => {
     document.write ('<br>');
   }
 });
+
+/* arrow function. Using 'Conditional/Ternary Operator' instead of 'if else'. Why it doesn´t work?
+
+pokemonList.forEach(item => {
+  document.write (`${item.name} (height: ${item.height}) ${item.height > 6 ? "Wow, that’s big!" : ""}<br>);
+});
+*/
