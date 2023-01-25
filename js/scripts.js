@@ -25,62 +25,34 @@ let pokemonRepository = (function (){
 function getAll(){
   return pokemonList;
 }
+
 function add(pokemon){
   pokemonList.push (pokemon);
 }
+
+function addListItem(pokemon){
+  let container=document.querySelector('.pokemon-list');
+  let listItem=document.createElement('li');
+  let button=document.createElement('button');
+  button.innerText= pokemon.name;
+  button.classList.add('buttonStyle');
+  listItem.appendChild (button);
+  container.appendChild (listItem);
+  button.addEventListener('click', function(event){showPokemonDetails(pokemon)});
+}
+
+
+function showPokemonDetails(pokemonArgument) {
+  console.log(pokemonArgument);
+}
+
 return {
   getAll:getAll,
-  add:add
-}
+  add:add,
+  addListItem:addListItem,
+  }
 })()
 
-/* for loop
-for (let i=0; i<pokemonList.length; i++){
-  document.write (pokemonList[i].name  + ' (height: '+ pokemonList[i].height + ')' );
-  if (pokemonList[i].height > 6) {
-    document.write ('Wow, that’s big! <br>');
-  } else  {
-    document.write ('<br>');
-  }
-}
-*/
-
-//forEach with external function
-pokemonRepository.getAll().forEach(WritePokemons);
-function WritePokemons(item){
-  document.write (item.name  + ' (height: '+ item.height + ')' );
-  if (item.height > 6) {
-    document.write ('Wow, that’s big! <br>');
-  } else  {
-    document.write ('<br>');
-  }
-}
-
-
-/*forEach with internal anonymous function
-  pokemonList.forEach(function(item){
-  document.write (item.name  + ' (height: '+ item.height + ')' );
-  if (item.height > 6) {
-    document.write ('Wow, that’s big! <br>');
-  } else  {
-    document.write ('<br>');
-  }
-});*/
-
-
-/* arrow function
-pokemonList.forEach(item => {
-  document.write (item.name  + ' (height: '+ item.height + ')' );
-  if (item.height > 6) {
-    document.write ('Wow, that’s big! <br>');
-  } else  {
-    document.write ('<br>');
-  }
+pokemonRepository.getAll().forEach(function(pokemon){
+pokemonRepository.addListItem(pokemon);
 });
-
-/* arrow function. Using 'Conditional/Ternary Operator' instead of 'if else'. Why it doesn´t work?
-
-pokemonList.forEach(item => {
-  document.write (`${item.name} (height: ${item.height}) ${item.height > 6 ? "Wow, that’s big!" : ""}<br>);
-});
-*/
