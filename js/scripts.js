@@ -49,6 +49,7 @@ let pokemonRepository = (function (){
 
   //load pokemon details - promise (image, height, type)
   function loadDetails(item) {
+    console.log("Loading details", item)
     // defining url from json results and then fetching those details
     let url = item.detailsUrl;
     return fetch(url).then(function (response) {
@@ -132,11 +133,6 @@ let pokemonRepository = (function (){
           hideModal();
         }
       });
-
-      document.querySelector ('button.buttonStyle').addEventListener('click', () => {
-        showDetails ('Modal Title', 'Modal Content');
-      });
-
     });
   }
 
