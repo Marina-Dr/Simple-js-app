@@ -16,15 +16,20 @@ let pokemonRepository = (function (){
   function addListItem(pokemon){
     let container=document.querySelector('.pokemon-list');
     let listItem=document.createElement('li');
+    listItem.classList.add ('list-group-item');
     let button=document.createElement('button');
     button.innerText= pokemon.name;
-    button.classList.add('buttonStyle');
+    button.classList.add('btn');
+    button.classList.add('btn-outline-primary');
+    button.classList.add('btn-lg');
+    button.classList.add('btn-block');
+    button.setAttribute('data-toggle','modal');
+    button.setAttribute('data-target','#exampleModal');
     listItem.appendChild (button);
     container.appendChild (listItem);
     button.addEventListener('click', function(){showDetails(pokemon)});
   }
-
-
+  
   //load a list of pokemon from api. Promise fetch function.
   function loadList() {
     return fetch(apiUrl).then(function (response) {
@@ -69,30 +74,23 @@ let pokemonRepository = (function (){
   // info to log when pokemon is clicked. Execute loadDetails and pass pokemon as parameter and then executes
   function showDetails(pokemon) {
     loadDetails(pokemon).then(function () {
-      let modalContainer = document.querySelector ('#modal-container');
 
-      modalContainer.innerHTML = '';
-
-      let modal = document.createElement('div');
-      modal.classList.add ('modal');
-
-      let sprite = document.createElement('img');
-      sprite.classList.add ('sprite');
-      sprite.src = pokemon.imageUrl;
-
-      let closeButtonElement = document.createElement ('button');
-      closeButtonElement.classList.add('modal-close');
-      closeButtonElement.innerText = 'X';
-      closeButtonElement.addEventListener ('click', hideModal)
-
-      let titleElement = document.createElement ('h1');
-      titleElement.innerText =  (pokemon.name);
+      //here we write code for the Modal
+      let modalBody = $(".modal-body");
+      let modalTitle =$(".modal-title");
+      let modalHeader = $(".modal-header");
+      modalTitle.empty ();
+      modalBody.empty();
+      //creating element for name in modal content
+      let nameElement = $("<h1>"+ pokemon.name + "</h1>");
+      //creating img in modal content
+      let imageElement = $('<img class="modal-img" style="width:50%">');
+      imageElement.attr("src", pokemon.imageUrl);
+      let heightElement = $("<p>"+"height:"+ pokemon.height + "</p>");
 
       let contentElement = document.createElement ('p');
-
       // variable declared as empty string to be used to store the names of the types
       let pokemonTypes = "";
-
       // for loop used to iterate through the pokemon.types object.
       for (let i = 0; i < pokemon.types.length; i++) {
         //name of the current type is concatenated to the typeNames variable (appending to the end of the string)
@@ -102,37 +100,13 @@ let pokemonRepository = (function (){
           pokemonTypes += ", ";
         }
       }
-
       // value of typeNames is then assigned to the innertext property of contentElement.
       contentElement.innerText =('Height: ' + pokemon.height + '\n' +  '\n' + 'Types: ' + pokemonTypes);
-
-
-      modal.appendChild (closeButtonElement);
-      modal.appendChild (titleElement);
-      modal.appendChild (contentElement);
-      modalContainer.appendChild (modal);
-      modal.appendChild (sprite);
-
-
-      modalContainer.classList.add('is-visible');
-
-
-      function hideModal (){
-        modalContainer.classList.remove ('is-visible');
-      }
-
-      window.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && modalContainer.classList.contains('is-visible')){
-          hideModal();
-        }
-      });
-
-      modalContainer.addEventListener('click', (e) => {
-        let target = e.target;
-        if (target === modalContainer) {
-          hideModal();
-        }
-      });
+      //let typesElement = $("<p>" + "types:" + pokemon.types + "<p>");
+      modalTitle.append(nameElement);
+      modalBody.append(imageElement);
+      modalBody.append(heightElement);
+      modalBody.append(contentElement);
     });
   }
 
